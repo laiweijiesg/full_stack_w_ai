@@ -69,6 +69,12 @@ from app import app as application
 eliminates the need to manually check for if task is  None, as it throws an error 
 
 
+- python type hinting: specifies expected input and return
+def get_task(id: int) -> str:
+    return f"Task {id}"
+
+
+
 
 
 
