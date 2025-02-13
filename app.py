@@ -25,6 +25,9 @@ class MyTask(db.Model):
     complete = db.Column(db.Integer)
     created = db.Column(db.DateTime, default=func.now())
 
+    def __repr__(self):
+        return f"Task {self.id}"
+
 
 
 
