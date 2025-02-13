@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Update Due Date</title>
+{% endblock %}
+
+
+
+{% block body %}
+
+<h1>Update Due Date</h1>
+
+<form action="/update_due/{{task.id}}" method="POST">
+    <label for="due_date">New Due Date:</label>
+    <input type="datetime-local" name="due_date" 
+    value="{{ task.due_date.strftime('%Y-%m-%dT%H:%M') if task.due_date else '' }}" 
+    required>
+    <button type="submit">Update Due Date</button>
+</form>
+
+
+{% endblock %}

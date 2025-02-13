@@ -22,6 +22,7 @@ class Todo(db.Model):
     content = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Integer, default=0)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    due_date = db.Column(db.DateTime)
     
     def __repr__(self):
         return f'Task {self.id}'
@@ -32,6 +33,7 @@ with app.app_context():
 
 
 @app.route('/', methods=["POST","GET"])
+
 def index():
     """Main page for App
 
@@ -40,7 +42,11 @@ def index():
     """
     if request.method == "POST":
         task_content = request.form['content']
-        new_task = Todo(content=task_content)
+        due_date_str = request.form['due_date'] #Get due date from form
+        due_date = datetime.strptime(due_date_str, '%Y-%m-%dT%H:%M') if due_date_str else None  # Convert string to datetime
+
+        new_task = Todo(content=task_content, due_date=due_date)
+
         try:
             db.session.add(new_task)
             db.session.commit()
@@ -92,6 +98,26 @@ def update(id):
             return "Error"
     else:
         return render_template("update.html", task=task)
+
+@app.route("/update_due/<int:id>", methods=["GET", "POST"])
+
+def update_due(id):
+    """Update only the due date of a task."""
+    task = Todo.query.get_or_404(id)
+
+    if request.method == "POST":
+        due_date_str = request.form["due_date"]
+        task.due_date = datetime.strptime(due_date_str, "%Y-%m-%dT%H:%M") if due_date_str else None
+
+        try:
+            db.session.commit()
+            return redirect("/")
+        except Exception as e:
+            print(f"ERROR: {e}")
+            return "Error updating due date"
+    else:
+        return render_template("update_due.html", task=task)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

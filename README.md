@@ -73,6 +73,26 @@ eliminates the need to manually check for if task is  None, as it throws an erro
 def get_task(id: int) -> str:
     return f"Task {id}"
 
+- navigating sql from terminal:
+
+    cd to database.db
+    sqlite3 database.db #open shell
+
+    .tables             #list tables
+    select * from table #show rows
+
+- *** SQLite only creates db once, if schema changes, have to manually alter tables, or drop and recreate db
+
+- return render_template('index.html', tasks=tasks)
+
+LHS (tasks): This is the variable name that will be available inside index.html.
+RHS (tasks): This is the Python variable from app.py (which contains the list of Todo objects).
+
+- adding additional due date column in the page:
+
+1. add due date table header, and task.due_date (+exception handling)
+2. add due date to db schema
+3. add due date to index, (get due date from input, save as new_task and passed to db)
 
 
 
