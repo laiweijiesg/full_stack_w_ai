@@ -95,6 +95,44 @@ RHS (tasks): This is the Python variable from app.py (which contains the list of
 3. add due date to index, (get due date from input, save as new_task and passed to db)
 
 
+-------
+
+Day 3 : 19 Feb 2025
+
+-✅ Use request.form['key'] if the field is required and must exist (but use try-except to catch errors).
+✅ Use request.form.get('key') for optional fields or when avoiding crashes is important.
+
+username = request.form.get('username')
+Returns None if the field is missing, preventing crashes.
+Allows setting a default value:
+username = request.form.get('username', 'Guest')
+
+
+
+- @app.route("/register", methods=["POST"])
+This route is triggered only when the form is submitted (POST method).
+If a user tries to visit /register directly via browser (GET method), they'll get an error.
+
+-regex for strong passwords:
+import re
+
+def is_strong_password(password):
+    return (
+        len(password) >= 8 and  # At least 8 characters
+        any(char.isdigit() for char in password) and  # At least 1 number
+        any(char.isupper() for char in password) and  # At least 1 uppercase letter
+        any(char.islower() for char in password)  # At least 1 lowercase letter
+    )
+
+
+
+
+
+
+
+---- 
+
+
 
 
 
