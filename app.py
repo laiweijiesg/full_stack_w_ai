@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect, session, url_for
+from flask import Flask, render_template, request,redirect, session, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_scss import Scss
 from flask_sqlalchemy import SQLAlchemy
@@ -41,29 +41,37 @@ def home():
 #Login
 @app.route("/login", methods=["POST"])
 def login():
+    if "username" in session:
+        return redirect(url_for("dashboard"))  # Prevent duplicate logins
+
     # Collect info from the form
     username = request.form.get('username')
     password = request.form.get('password')
+
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
         session['username'] = username
         return redirect(url_for('dashboard'))
     else:
-        return render_template("index.html")
+        flash("Invalid username or password", "error")  # Add flash message
+        return redirect(url_for("home"))
 
 
 #Register
 @app.route("/register", methods = ["POST"])
 def register():
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form.get('username')
+    password = request.form.get('password')
+
     # input validation
     if not username or not password:
         return render_template("index.html", error="Please fill in all the fields")
     
     user = User.query.filter_by(username=username).first()
     if user:
-        return render_template("index.html", error="Username exists")
+        flash("Username already exists", "error")
+        return redirect(url_for("home"))
+
     
     #Create new user
     else:
