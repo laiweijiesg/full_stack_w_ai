@@ -76,6 +76,7 @@ def get_task(id: int) -> str:
 - navigating sql from terminal:
 
     cd to database.db
+    
     sqlite3 database.db #open shell
 
     .tables             #list tables

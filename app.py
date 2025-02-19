@@ -11,7 +11,7 @@ Scss(app)
 
 #SQL Config
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATION"] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 #DB Models
@@ -77,6 +77,19 @@ def register():
         return redirect(url_for('dashboard'))
 
 #Dashboard
+@app.route("/dashboard")
+def dashboard():
+    if "username" in session:
+        return render_template('dashboard.html', username = session['username'])
+    
+    else:
+        return redirect(url_for('home'))
+
+#Logout
+@app.route("/logout")
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":

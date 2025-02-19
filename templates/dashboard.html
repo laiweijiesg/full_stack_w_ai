@@ -2,9 +2,9 @@
 
 {% block body %}
 <div class="container">
-    <h1>Welcone, {{username}}!</h1>
+    <h1>Welcome, {{username}}!</h1>
     <p>Dashboard Homepage</p>
-    <a href="" class="btn btn-logout"></a>
+    <a href="{{url_for('logout')}}" class="btn btn-logout">Log Out</a>
 
 </div>
 
