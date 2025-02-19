@@ -53,8 +53,9 @@ def login():
         session['username'] = username
         return redirect(url_for('dashboard'))
     else:
-        flash("Invalid username or password", "error")  # Add flash message
-        return redirect(url_for("home"))
+        return render_template("index.html", error="Invalid username or password, error message")  
+        # Stays on same page, display error msg even without flash
+
 
 
 #Register

@@ -125,6 +125,66 @@ def is_strong_password(password):
         any(char.islower() for char in password)  # At least 1 lowercase letter
     )
 
+- from flask import flash, FLASH for error messages, added to BE and FE
+
+be:
+flash("Invalid username or password", "error")  # Add flash message
+        return redirect(url_for("home"))
+
+fe:
+{% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+- ## Handling Redirects vs Rendering Templates in Flask
+
+## 📌 `redirect(url_for(...))` vs `render_template(...)` in Flask
+
+This table explains the differences between `redirect(url_for(...))` and `render_template(...)` and when to use each.
+
+| **Feature**          | `redirect(url_for(...))`        | `render_template(...)`               |
+|----------------------|--------------------------------|-------------------------------------|
+| **Effect**          | Moves the user to a new route  | Stays on the same page            |
+| **Triggers New Request?** | ✅ Yes (302 Redirect)  | ❌ No                              |
+| **Changes URL?**     | ✅ Yes                          | ❌ No                              |
+| **When to Use?**     | After login, logout, form submission, page navigation | Displaying pages, showing forms, error messages |
+| **Example Use**      | `return redirect(url_for("dashboard"))` | `return render_template("login.html")` |
+
+### 🔥 **Key Takeaways**
+- Use **`redirect(url_for(...))`** when **navigating to a different page** after an action.
+- Use **`render_template(...)`** when **staying on the same page** and showing dynamic content.
+- Redirecting helps prevent **form resubmission issues** when refreshing the page.
+
+
+
+This table explains when to use `redirect(url_for(...))` vs `render_template(...)` in different scenarios.
+
+| **Case**             | ❌ **Incorrect Approach**           | ✅ **Correct Alternative**                      | **Why?**                                    |
+|----------------------|----------------------------------|-----------------------------------------------|---------------------------------------------|
+| **Failed login**     | `redirect(url_for("login"))`    | `render_template("login.html", error="Invalid credentials")` | Stay on login page to show error message.  |
+| **Successful login** | `render_template("dashboard.html")` | `redirect(url_for("dashboard"))`              | Change the URL properly after login.       |
+| **User not logged in** | `render_template("login.html")` | `redirect(url_for("login"))`                  | Redirect to login page for security.       |
+
+### 💡 **Key Takeaways**
+- Use `render_template(...)` when **staying on the same page** (e.g., showing errors).
+- Use `redirect(url_for(...))` when **navigating between pages** (e.g., login success, logout, unauthorized access).
+- Redirecting helps prevent **form resubmission issues** when refreshing a page.
+
+
+- error handling
+
+1. if using render template, error = "error message"
+add this to FE:
+{% if error %}
+    <div class="flash flash-error">{{ error }}</div>
+{% endif %}
+
+
 
 
 
